@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 
 interface Alert {
+  alert_id?: string;
   title: string;
   description: string;
   severity: string;
-  location: string;
+  location?: string;
   timestamp: string;
 }
 
@@ -14,14 +15,8 @@ export default function Alerts() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
 
   useEffect(() => {
-    // Fetch initial alerts
-    fetch("http://localhost:8000/api/v1/alerts")
-      .then((res) => res.json())
-      .then((data) => setAlerts(data))
-      .catch((err) => console.error("Failed to fetch alerts", err));
-
     // Listen to WebSocket for real-time alerts
-    const ws = new WebSocket("ws://localhost:8000/api/v1/ws/alerts");
+    const ws = new WebSocket("ws://localhost:8000/ws/alerts");
     
     ws.onmessage = (event) => {
       const newAlert = JSON.parse(event.data);
@@ -32,6 +27,12 @@ export default function Alerts() {
       ws.close();
     };
   }, []);
+
+  const handleFeedback = (alertId: string, type: string) => {
+    console.log(`Feedback for ${alertId}: ${type}`);
+    // In production, this would send a POST request to backend/app/feedback
+    alert(`Feedback Recorded: ${type}`);
+  };
 
   return (
     <div className="bg-white/80 backdrop-blur-md border border-red-200/50 rounded-2xl overflow-hidden shadow-xl">
@@ -47,9 +48,23 @@ export default function Alerts() {
             <div key={i} className="border-l-4 border-red-500 bg-white p-4 rounded-r-xl shadow-sm">
               <h3 className="font-bold text-red-700">{alert.title}</h3>
               <p className="text-sm text-slate-600 mt-1">{alert.description}</p>
-              <div className="mt-3 flex gap-2 text-xs text-slate-500">
+              <div className="mt-3 flex gap-2 text-xs text-slate-500 items-center">
                 <span className="font-bold bg-red-100 text-red-800 px-2 py-1 rounded-md">{alert.severity}</span>
-                <span className="bg-slate-100 px-2 py-1 rounded-md">📍 {alert.location}</span>
+                <span className="bg-slate-100 px-2 py-1 rounded-md">📍 {alert.location || "Region"}</span>
+              </div>
+              <div className="mt-3 flex gap-2 border-t pt-2">
+                <button 
+                  onClick={() => handleFeedback(alert.alert_id || "demo-id", "UNDERSTOOD")}
+                  className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200 font-semibold"
+                >
+                  ✓ Understood
+                </button>
+                <button 
+                  onClick={() => handleFeedback(alert.alert_id || "demo-id", "NEED_MORE_INFO")}
+                  className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200 font-semibold"
+                >
+                  ℹ️ Need More Info
+                </button>
               </div>
             </div>
           ))
