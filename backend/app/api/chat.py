@@ -29,7 +29,7 @@ class ChatRequest(BaseModel):
 async def ask_weathergpt(request: ChatRequest):
     try:
         # STEP 1: Gather and Normalize Evidence (Phase 1)
-        evidence = gather_normalized_evidence(request.location, request.lat, request.lon)
+        evidence = await gather_normalized_evidence(request.location, request.lat, request.lon)
         
         # STEP 2: Research Intelligence Loop (Phase 2)
         obs_validation = validate_forecast_against_observation(evidence)
