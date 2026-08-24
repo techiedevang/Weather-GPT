@@ -29,41 +29,86 @@ export default function Home() {
           
           {/* Left Column */}
           <div className="lg:col-span-8 space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          {/* Left Column: Data & Analytics */}
+          <div className="lg:col-span-2 space-y-6">
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <WeatherWidget />
-              <div className="bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/50 flex flex-col justify-center">
-                <h2 className="text-xl font-bold text-blue-900 mb-2">Location & Context</h2>
-                <p className="text-slate-600 mb-4">
-                  Currently tracking weather events in your area. Use the AI Chat below to get travel, farmer, or citizen advisories based on deterministic risk engines.
-                </p>
-                <div className="flex gap-2">
-                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md">Hindi</span>
-                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md">English</span>
-                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md">Voice Enabled</span>
+              {/* Evidence Panel */}
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <h2 className="text-xl font-bold text-slate-800">Forecast Validation</h2>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between items-center border-b pb-2">
+                    <span className="text-slate-500">Source Agreement</span>
+                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded font-bold">HIGH</span>
+                  </div>
+                  <div className="flex justify-between items-center border-b pb-2">
+                    <span className="text-slate-500">Observation MAE</span>
+                    <span className="font-mono">1.2°C</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-500">Overall Confidence</span>
+                    <span className="text-blue-600 font-bold">MODERATE (85%)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Personal Weather Planner Panel */}
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-200 bg-gradient-to-br from-white to-blue-50 space-y-4">
+                <h2 className="text-xl font-bold text-blue-800">📅 Weather Planner</h2>
+                <div className="text-sm">
+                  <p className="text-slate-600 mb-2">Event: <span className="font-semibold text-slate-900">Outdoor Event (6:00 PM)</span></p>
+                  
+                  {/* Visual Timeline */}
+                  <div className="space-y-2 mt-4 font-mono text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="w-12 text-slate-500">4:00</span>
+                      <div className="h-4 bg-orange-300 w-1/4 rounded"></div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-12 text-green-600 font-bold">4:30</span>
+                      <div className="h-4 bg-green-400 w-1/12 rounded relative">
+                        <span className="absolute -right-12 text-green-700 font-bold">← BEST</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-12 text-slate-500">5:00</span>
+                      <div className="h-4 bg-orange-400 w-1/3 rounded"></div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-12 text-red-500 font-bold">6:00</span>
+                      <div className="h-4 bg-red-500 w-3/4 rounded"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* AI Chat Interface */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+              <Chat />
+            </div>
+
+          </div>
+
+          {/* Right Column: Alerts & Live Stream */}
+          <div className="space-y-6">
+            <Alerts />
             
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 overflow-hidden">
-               <Chat />
+            <div className="bg-slate-800 text-slate-300 p-6 rounded-2xl shadow-sm space-y-3 font-mono text-xs">
+              <h3 className="text-white font-bold mb-4 uppercase tracking-wider">System Logs</h3>
+              <p>[INFO] Ingesting GFS 0.25deg...</p>
+              <p>[INFO] Ingesting AWS Obs...</p>
+              <p className="text-green-400">[SUCCESS] Multi-source Fusion Complete.</p>
+              <p>[INFO] Uncertainty Engine: Score 25</p>
+              <p>[INFO] Awaiting LLM Generation...</p>
+              <p className="text-blue-400">[VALIDATOR] Output aligns with evidence.</p>
             </div>
           </div>
 
-          {/* Right Column */}
-          <div className="lg:col-span-4 space-y-8">
-            <Alerts />
-            
-            <div className="bg-gradient-to-br from-teal-400 to-cyan-500 rounded-2xl shadow-xl p-6 text-white border border-teal-300 relative overflow-hidden">
-              <div className="absolute -right-4 -bottom-4 opacity-20 text-8xl">🗺️</div>
-              <h2 className="text-xl font-bold mb-2 relative z-10">Risk Map</h2>
-              <div className="h-40 bg-black/10 rounded-xl flex items-center justify-center backdrop-blur-sm relative z-10 border border-white/20 mt-4">
-                <p className="text-sm font-medium">Map integration ready for Phase 2</p>
-              </div>
-            </div>
-          </div>
-          
         </div>
       </div>
-    </div>
+    </main>
   );
 }
