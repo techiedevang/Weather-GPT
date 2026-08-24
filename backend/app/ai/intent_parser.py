@@ -1,36 +1,19 @@
-import json
-from app.ai.groq_client import get_groq_client
-from app.schemas.ai_models import IntentExtraction
+import re
 
-def parse_intent(query: str) -> IntentExtraction:
-    client = get_groq_client()
-    
-    prompt = f"""
-    Analyze the following user query about weather.
-    Extract the following details:
-    1. intent: Must be one of [current_weather, forecast, rain_query, alert_query, travel_advisory, farmer_advisory, climate_analytics]
-    2. location: The location mentioned. If none, return empty string.
-    3. time: The time period mentioned. If none, return 'current'.
-    4. language: The language of the query (e.g., english, hindi, hinglish).
-    
-    Return ONLY a valid JSON object matching this schema, no other text:
-    {{
-        "intent": "string",
-        "location": "string",
-        "time": "string",
-        "language": "string"
-    }}
-    
-    Query: "{query}"
+def parse_intent(query: str) -> str:
     """
+    Step 13: Intent Parser.
+    Determines what the user is actually asking for to route to the correct tool.
+    """
+    query_lower = query.lower()
     
-    response = client.chat.completions.create(
-        model="llama3-70b-8192",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.0,
-        response_format={"type": "json_object"}
-    )
-    
-    content = response.choices[0].message.content
-    data = json.loads(content)
-    return IntentExtraction(**data)
+    if any(word in query_lower for word in ["plan", "calendar", "time", "when"]):
+        return "planner"
+    elif any(word in query_lower for word in ["alert", "warning", "danger", "cyclone", "flood"]):
+        return "alert"
+    elif any(word in query_lower for word in ["farmer", "crop", "spray", "agriculture"]):
+        return "agriculture"
+    elif any(word in query_lower for word in ["travel", "flight", "drive", "road"]):
+        return "travel"
+    else:
+        return "weather_general"

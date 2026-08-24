@@ -63,18 +63,23 @@ async def ask_weathergpt(request: ChatRequest):
         }
         
         # STEP 5: AI Generation & Validation (Phase 3)
-        prompt = generate_grounded_prompt(evidence_payload, language="english")
+        from app.ai.intent_parser import parse_intent
+        intent = parse_intent(request.message)
         
-        # In a real system, you might loop this up to 3 times if validation fails
-        ai_response = generate_ai_response(prompt)
+        prompt = generate_grounded_prompt(evidence_payload, language="english")
+        prompt += f"\nDetected Intent: {intent}"
+        
+        # Call Groq API Asynchronously
+        ai_response = await generate_ai_response(prompt)
         
         is_valid = validate_ai_evidence(ai_response, evidence_payload)
         
         if not is_valid:
-            # Fallback if LLM hallucinated
+            # Safe Fallback if LLM hallucinates (Step 15 requirement)
+            logger.warning("LLM hallucinated. Triggering safe fallback.")
             return {
                 "status": "success",
-                "answer": "System fallback: The forecast shows moderate risk. Please exercise caution. (LLM output was rejected by Evidence Validator).",
+                "answer": "System fallback: The forecast shows moderate risk. Please exercise caution. (LLM output was rejected by Evidence Validator due to hallucination).",
                 "risk_level": risk["risk_level"],
                 "evidence_payload": evidence_payload
             }
@@ -89,4 +94,5 @@ async def ask_weathergpt(request: ChatRequest):
         }
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Chat API Error: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal intelligence engine error.")
