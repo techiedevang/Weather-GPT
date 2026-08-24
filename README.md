@@ -1,56 +1,141 @@
-# 🌩️ WeatherGPT - SIH MVP
+# WeatherGPT — Production Master README
 
-WeatherGPT is an AI-powered weather intelligence and early-warning layer. It integrates real-time meteorological data, NWP outputs, and official warnings to turn complex weather information into personalized, multilingual, and actionable decisions.
+WeatherGPT is an uncertainty-aware, evidence-validated, impact-based weather intelligence platform that transforms multi-source meteorological evidence into localized, user-specific and proactive decisions.
 
-## 🚀 Features (Hackathon Ready)
-- **Natural Language Querying**: Ask weather questions in English, Hindi, or Hinglish (powered by Groq / LLaMA3-70b).
-- **Voice Enabled**: Native Web Speech API integration for Voice-to-Text and Text-to-Speech.
-- **Risk & Advisory Engine**: Deterministic rules provide safe, non-hallucinated advice for Farmers and Citizens.
-- **Real-Time Alerts**: WebSockets push critical disaster warnings to the dashboard instantly.
-- **Climate Analytics**: Analyzes historical climate trends.
-- **Modern UI**: Next.js App Router with Tailwind CSS glassmorphism & cloud theme.
+**Target:** SIH Internal Selection → SIH Final → Research Publication → Production Deployment  
+**Primary stack:** Next.js + TypeScript + Tailwind + FastAPI + Python + PostgreSQL/Supabase + Redis + WebSocket + Groq/LLM
 
-## 🛠️ Tech Stack
-- **Frontend**: Next.js, React, Tailwind CSS
-- **Backend**: Python, FastAPI, WebSockets
-- **AI**: Groq API (LLaMA3)
-- **Database**: Supabase (PostgreSQL)
+## 1. Product Vision
+A conventional weather app answers:
+“What is the weather?”
 
-## ⚡ How to Run Locally
+WeatherGPT answers:
+“Given the available weather evidence, its uncertainty, my location/context and my upcoming activity, what should I do and why?”
 
-### 1. Environment Setup
-Create a `.env` file inside the `backend/` directory:
-```env
-GROQ_API_KEY=your_groq_api_key_here
-SUPABASE_URL=your_supabase_url_here (optional)
-SUPABASE_ANON_KEY=your_supabase_key_here (optional)
+Core capabilities:
+- Real-time weather
+- NWP/GFS evidence
+- Observations
+- Official warnings
+- Multi-source fusion
+- Observation-aware reliability
+- Uncertainty estimation
+- Impact/risk modelling
+- User/activity context
+- Grounded AI
+- Evidence validation
+- English/Hindi/Hinglish
+- Proactive alerts
+- Personal Weather Planner
+- Calendar-weather conflict detection
+- Best available time-window recommendation
+- Feedback
+- Research baselines and reproducible experiments
+
+## 2. Core Research Positioning
+WeatherGPT addresses the gap between uncertain meteorological forecasts and reliable localized action by fusing forecast and observation evidence, estimating uncertainty, mapping hazards to user-specific impacts, generating actionable advisories, and independently validating those advisories against the underlying evidence.
+
+**Core loop:**
+FORECAST → OBSERVATION CHECK → MULTI-SOURCE FUSION → UNCERTAINTY → IMPACT → USER / ACTIVITY CONTEXT → CALENDAR CONFLICT / PLANNING → ACTION → EVIDENCE VALIDATION → DELIVERY → FEEDBACK / EVALUATION
+
+**Positioning:**
+WeatherGPT is an intelligence, safety and decision-support layer above existing meteorological forecasting infrastructure.
+It is **not**: A replacement for IMD, a replacement for GFS/WRF, a new global weather foundation model, a generic LLM wrapper, a simple weather API + chat UI, or a claim of perfect forecast accuracy.
+
+## 3. Research Gaps — ALL Mandatory in Internal MVP
+Every gap must have: Implementation → Demonstration → Measurement
+
+| Gap | MVP implementation | Evidence |
+| --- | --- | --- |
+| Forecast → impact | Impact Engine | Impact + action |
+| Forecast reliability vs observations | Observation Validator | MAE/RMSE/Bias |
+| Multi-source disagreement | Forecast Fusion | Agreement score |
+| Weather uncertainty | Uncertainty Engine | Confidence |
+| Generic forecast vs user-specific decision | Context Engine | Context-specific action |
+| LLM unsupported claims | Evidence Validator | Validation recall |
+| Translation vs actionability | Action-preserving multilingual layer | Meaning/action preservation |
+| Warning vs decision support | Personalized Alert Engine | Alert → impact → action |
+| Reactive weather apps | Personal Weather Planner | Proactive conflict detection |
+| “Best time” missing from weather apps | Time-slot optimizer | Lowest-risk valid window |
+| No proof over baseline | Research baselines | Comparative metrics |
+| No feedback loop | Feedback service | Acknowledgement/feedback |
+| Reproducibility | Research framework | Data + scripts + results |
+
+No research gap is merely future scope. Production-scale expansion can be future scope, but every research contribution must have a testable MVP implementation.
+
+## 4. Personal Weather Planner — Mandatory Core Feature
+The Personal Weather Planner is a core product differentiator, not a calendar API add-on.
+
+**WeatherGPT vs Normal App:**
+“Your 6 PM outdoor event conflicts with the forecast. 4:30 PM is the safer available window because rainfall risk is lower and no higher-severity warning is active.”
+
+**Pipeline:**
+Calendar Event → Event Classification → Location + Time Resolution → Hourly Weather / NWP Timeline → Observation + Official Warning Evidence → Uncertainty → Impact / Risk Per Time Slot → Constraint Checking → Best Available Window → Personalized Recommendation → Evidence Validation → Planner Card / Notification
+
+## 5. Architecture & Principles
+**Architecture Principles:**
+- Evidence before generation.
+- LLM never owns weather truth.
+- Deterministic logic owns safety-critical risk decisions.
+- Every recommendation is explainable.
+- Every external dependency can fail safely.
+- Source provenance and freshness are preserved.
+- No fabricated weather data.
+- All LLM output is schema-validated and evidence-checked.
+
+## 6. Technology Stack
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, TanStack Query, React Leaflet, Recharts
+- **Backend:** Python, FastAPI, Pydantic, httpx, AsyncIO, WebSockets
+- **AI:** Groq-compatible LLM, Structured output, Tool calling
+- **Data:** PostgreSQL, Supabase, PostGIS, Redis
+- **Infrastructure:** Docker, Docker Compose, Reverse proxy, CI/CD
+
+## 7. Production Repository Structure
+```
+WeatherGPT/
+├── frontend/
+├── backend/
+│   ├── app/
+│   │   ├── api/, ai/, ingestion/, normalization/, services/, tools/, validation/, fusion/, uncertainty/, impact/, decision/, context/, planner/, feedback/, database/, schemas/, utils/
+├── data/
+├── research/
+│   ├── literature/, baselines/, experiments/, results/
+├── docs/
+├── scripts/
+├── .github/workflows/
+├── docker-compose.yml
+└── README.md
 ```
 
-### 2. Quick Start (Windows)
-Simply double-click the `start.bat` file in the root directory! This will open two terminals and start both the backend and the frontend.
+## 8. Definition of Done
+The project is not done because the homepage works. It requires:
+- **Weather:** Current weather, Forecast, NWP, Observation, Official alerts
+- **Research:** Forecast → impact, Observation reliability, Multi-source fusion, Uncertainty, User context, Evidence validation, Multilingual action preservation, Personalized warnings, Calendar conflict detection, Best-window optimization, Feedback, Baseline comparison, Reproducible experiments
+- **AI:** Intent extraction, Tool routing, Structured output, Grounded generation, Validator, Bounded regeneration, Safe fallback
+- **Product:** Dashboard, Chat, Risk map, Alert center, Planner, Explainability, Feedback
+- **Engineering:** Tests, CI, Docker, Logging, Health checks, Failure handling, Environment configuration
 
-### 3. Manual Start
-**Backend:**
-```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
+## 9. Six-Member Ownership
+1. **AI + Validation:** LLM, Intent, Tool routing, Structured output, Evidence validation, Regeneration, Multilingual
+2. **Weather/NWP/Observation:** Weather, NWP, Observations, Normalization, Provenance
+3. **Research Intelligence:** Fusion, Uncertainty, Impact, Risk, Research metrics
+4. **Frontend/UX:** Dashboard, Chat, Risk map, Planner, Alerts, Explainability, Feedback
+5. **Backend/Database/Security:** FastAPI, Database, API contracts, Security, Integration
+6. **Planner/Realtime/Research Evaluation:** Calendar, Event classification, Time-slot optimization, WebSockets, Baselines, Experiments, Metrics, Reproducibility
 
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## 10. Final Demo Story
+1. User asks weather question
+2. Multi-source evidence retrieved
+3. Observation agreement shown
+4. Uncertainty calculated
+5. Impact identified
+6. User context changes recommendation
+7. AI explains evidence
+8. Validator approves
+9. Planner finds safer time
+10. Alert arrives proactively
+11. User acknowledges
+12. Research dashboard shows metrics
 
-Open `http://localhost:3000` in your browser.
-
-## 🧪 How to trigger a Real-Time Alert Demo
-While the dashboard is open, open a new terminal and run:
-```bash
-curl -X POST "http://localhost:8000/api/v1/alerts" -H "Content-Type: application/json" -d "{\"title\":\"Cyclone Warning\",\"description\":\"Severe cyclonic storm approaching the coast within 24 hours. Evacuate low-lying areas.\",\"severity\":\"Critical\",\"location\":\"Coastal Regions\"}"
-```
-Watch the Alert Center instantly update on the frontend without a page refresh!
+**Disclaimer**
+WeatherGPT is a decision-support platform/prototype. Official government warnings and emergency instructions take precedence over recommendations generated by the platform. The interface must clearly communicate data freshness, source provenance and uncertainty.
