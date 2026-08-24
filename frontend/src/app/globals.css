@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #f0f8ff; /* Alice Blue */
+  --foreground: #0f172a; /* Slate 900 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0ea5e9; /* Sky 500 fallback */
+    --foreground: #f8fafc;
+  }
+}
+
+body {
+  background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* Cloud animation classes */
+.cloud {
+  background: white;
+  border-radius: 100px;
+  box-shadow: 0 8px 5px rgba(0, 0, 0, 0.1);
+  position: absolute;
+}
+.cloud::after, .cloud::before {
+  content: "";
+  position: absolute;
+  background: white;
+  z-index: -1;
+}
+.cloud::after {
+  width: 100px;
+  height: 100px;
+  top: -50px;
+  left: 50px;
+  border-radius: 100px;
+}
+.cloud::before {
+  width: 120px;
+  height: 120px;
+  top: -70px;
+  right: 50px;
+  border-radius: 200px;
+}
